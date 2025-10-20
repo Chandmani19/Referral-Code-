@@ -221,7 +221,7 @@
 <!-- 1. Referral Hub -->
 <button class="quick-service-btn" onclick="showView('referral-hub')">
 <svg class="w-6 h-6 accent-red-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM12 17H5a2 2 0 00-2 2v2h18v-2a2 2 0 00-2-2h-5z"></path></svg>
-<span class="accent-red-text">Ref Hub</span>
+<span class="accent-red-text">MobiCode</span>
 </button>
 <!-- 2. Redeem -->
 <button class="quick-service-btn" onclick="showView('redeem-code')">
@@ -231,12 +231,12 @@
 <!-- 3. Data -->
 <button class="quick-service-btn" onclick="showView('data-purchase')">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18.5V3m0 0l-4 4m4-4l4 4"></path></svg>
-<span>Data</span>
+<span class="accent-red-text">Дата</span>
 </button>
 <!-- 4. VAS (Value Added Service) -->
 <button class="quick-service-btn" onclick="showView('vas')">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v14L9 19zm0 0c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zm12-3c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zM9 9v10m12-14v10"></path></svg>
-<span>VAS</span>
+<span class="accent-red-text">Нэмэлт Үйлчилгээ</span>
 </button>
 </div>
 </div>
@@ -347,33 +347,33 @@
 </div>
 <div id="content-invite" class="tab-content space-y-4">
 <div class="text-center mb-6">
-<p class="text-gray-400 text-sm mb-2">YOUR REFERRAL CODE</p>
+<p class="text-gray-400 text-sm mb-2">Таны Мобикод</p>
 <div class="code-box p-3 rounded-lg flex justify-center items-center">
-<span id="referral-code" class="text-3xl font-extrabold text-white tracking-wider">X104DSJT</span>
+<span id="referral-code" class="text-3xl font-extrabold text-white tracking-wider">KYS69KMS</span>
 </div>
-<button id="btn-copy" class="tap-to-copy mt-2 text-sm font-medium">Tap to copy code</button>
+<button id="btn-copy" class="tap-to-copy mt-2 text-sm font-medium">Код Хуулах</button>
 </div>
 <div class="flex justify-around items-center mb-6 text-center text-sm">
 <div>
 <div class="flex items-center justify-center text-white font-bold text-lg">
 <svg class="w-5 h-5 mr-1 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 3
 </div>
-<p class="text-gray-400">Friends Referred</p>
+<p class="text-gray-400">Урисан Найзууд</p>
 </div>
 <div class="h-10 border-l border-[#3b4e6a]"></div>
 <div>
 <div class="flex items-center justify-center text-white font-bold text-lg">
-<svg class="w-5 h-5 mr-1 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> 15GB
+<svg class="w-5 h-5 mr-1 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> 5GB
 </div>
-<p class="text-gray-400">Earned Data</p>
+<p class="text-gray-400">Авсан Дата</p>
 </div>
 </div>
 <div class="flex space-x-3 mb-6">
-<button id="btn-invite-friends" class="btn-primary flex-1 p-3 rounded-xl font-bold text-sm uppercase"> INVITE FRIENDS </button>
+<button id="btn-invite-friends" class="btn-primary flex-1 p-3 rounded-xl font-bold text-sm uppercase"> КОД ХУВААЛЦАХ </button>
 <button id="btn-leaderboard-main" class="btn-secondary flex-1 p-3 rounded-xl font-bold text-sm uppercase"> LEADERBOARD </button>
 </div>
 <div id="tier-info-card" class="bg-dark-gray p-4 rounded-xl cursor-pointer hover:bg-[#2b4870] transition-colors">
-<p class="text-red-400 text-sm">Tier Progress</p>
+<p class="text-red-400 text-sm">Таны Цол</p>
 <div class="flex items-center justify-between mt-1 mb-3">
 <p class="text-2xl font-bold text-gray-400 flex items-center">
 <span class="mr-2">🥈</span> SILVER
@@ -383,43 +383,43 @@
 <div class="h-2 bg-[#3b4e6a] rounded-full mb-1">
 <div class="h-2 bg-red-500 rounded-full" style="width: 40%;"></div>
 </div>
-<p class="text-xs text-gray-400">40% - 2/5 referrals to <span class="text-yellow-400 font-semibold">Gold Tier</span></p>
+<p class="text-xs text-gray-400">40% - 2/5 дараагийн цол хүртэл <span class="text-yellow-400 font-semibold">Gold Tier</span></p>
 </div>
 <div class="mt-6">
-<p class="text-sm font-semibold mb-3">Rewards History</p>
+<p class="text-sm font-semibold mb-3">Урилгын Түүх</p>
 <div class="space-y-2 text-sm custom-scrollbar max-h-40 overflow-y-auto">
 <div class="flex justify-between p-3 bg-dark-gray rounded-xl">
-<span class="text-gray-400">2024.02.10</span>
-<span class="text-red-400 font-semibold">+5GB (Data purchase)</span>
+<span class="text-gray-400">2025.12.12</span>
+<span class="text-red-400 font-semibold">+3GB (Дата авсан)</span>
 </div>
 <div class="flex justify-between p-3 bg-dark-gray rounded-xl">
-<span class="text-gray-400">2024.02.08</span>
-<span class="text-red-400 font-semibold">+5GB (Data package)</span>
+<span class="text-gray-400">2025.11.30</span>
+<span class="text-red-400 font-semibold">+1GB (Дата авсан)</span>
 </div>
 <div class="flex justify-between p-3 bg-dark-gray rounded-xl">
-<span class="text-gray-400">2024.02.05</span>
-<span class="text-red-400 font-semibold">+5GB (VAS purchase)</span>
+<span class="text-gray-400">2025.10.05</span>
+<span class="text-red-400 font-semibold">+1GB (Нэмэлт үйлчилгээ авсан)</span>
 </div>
 </div>
 </div>
 </div>
 <div id="content-leaderboard" class="tab-content hidden space-y-4">
 <div class="flex justify-between items-center mb-4">
-<h2 class="text-lg font-semibold">Weekly Top Referrers</h2>
-<button id="btn-leaderboard-prizes" class="text-sm font-semibold text-red-400 hover:text-red-300 transition-colors py-1 px-3 rounded-full bg-dark-gray border border-red-400">Prizes</button>
+<h2 class="text-lg font-semibold">Энэ сарын тэргүүлэгчид</h2>
+<button id="btn-leaderboard-prizes" class="text-sm font-semibold text-red-400 hover:text-red-300 transition-colors py-1 px-3 rounded-full bg-dark-gray border border-red-400">Шагнал</button>
 </div>
 <div id="leaderboard-list" class="space-y-2 custom-scrollbar max-h-72 overflow-y-auto">
 </div>
 <div class="mt-6 p-3 bg-dark-gray rounded-xl text-center">
-<p class="text-sm">Your Position: <span class="text-red-400 font-bold">#15</span> (4 referrals)</p>
-<p class="text-xs text-gray-400">3 more to reach Top 10!</p>
+<p class="text-sm">Таны байр: <span class="text-red-400 font-bold">#15</span> (4 хүн урисан)</p>
+<p class="text-xs text-gray-400">дахиад 3 хүн уриад эхний 10т ороорой!</p>
 </div>
 <div class="mt-4 text-center text-xs text-gray-500">
-<p>Time remaining: <span class="text-red-400 font-semibold">2 days 15 hours</span></p>
+<p>Үргэлжлэх Хугацаа: <span class="text-red-400 font-semibold">23 өдөр 15 цаг</span></p>
 </div>
 </div>
 <div id="content-rewards" class="tab-content hidden">
-<h2 class="text-lg font-semibold mb-4">Your Rewards</h2>
+<h2 class="text-lg font-semibold mb-4">Таны Бэлэгнүүд</h2>
 <div class="grid grid-cols-2 gap-4 custom-scrollbar max-h-96 overflow-y-auto pr-2">
 </div>
 </div>
@@ -444,57 +444,52 @@
 <h2 class="text-2xl font-bold mb-6 text-center text-red-400">Leaderboard Prizes</h2>
 <div id="prizes-list" class="space-y-3 custom-scrollbar max-h-96 overflow-y-auto pb-4">
 </div>
-<p class="text-center text-xs text-gray-400 mt-4">Prizes are distributed weekly to the Top 5.</p>
+<p class="text-center text-xs text-gray-400 mt-4">Зөвхөн эхний 10 оролцогчидод.</p>
 </div>
 </div>
 <script>
    // --- Data Mockup (No changes) ---
    const REFERRAL_CODE = 'X104DSJT';
    const LEADERBOARD_DATA = [
-       { rank: 1, name: "Bataa", referrals: 28, data: "140GB", color: "text-red-400" },
-       { rank: 2, name: "Nomiin", referrals: 25, data: "125GB", color: "text-blue-400" },
-       { rank: 3, name: "Tugsuu", referrals: 22, data: "110GB", color: "text-green-400" },
-       { rank: 4, name: "Khulan", referrals: 18, data: "90GB" },
-       { rank: 5, name: "Anand", referrals: 15, data: "75GB" },
-       { rank: 6, name: "Bileguun", referrals: 12, data: "60GB" },
-       { rank: 7, name: "Saruul", referrals: 10, data: "50GB" },
-       { rank: 8, name: "Munkh", referrals: 9, data: "45GB" },
-       { rank: 9, name: "Oyun", referrals: 8, data: "40GB" },
-       { rank: 10, name: "Bat", referrals: 7, data: "35GB" },
-       { rank: 11, name: "Enkh", referrals: 6, data: "30GB" },
-       { rank: 12, name: "Dulmaa", referrals: 6, data: "30GB" },
-       { rank: 13, name: "Ganbat", referrals: 5, data: "25GB" },
-       { rank: 14, name: "Nyamka", referrals: 5, data: "25GB" },
+       { rank: 1, name: "Bataa", referrals: 28, data: "55GB", color: "text-red-400" },
+       { rank: 2, name: "Nomiin", referrals: 25, data: "48GB", color: "text-blue-400" },
+       { rank: 3, name: "Tugsuu", referrals: 22, data: "45GB", color: "text-green-400" },
+       { rank: 4, name: "Khulan", referrals: 18, data: "40GB" },
+       { rank: 5, name: "Anand", referrals: 15, data: "38GB" },
+       { rank: 6, name: "Bileguun", referrals: 12, data: "35GB" },
+       { rank: 7, name: "Saruul", referrals: 10, data: "33GB" },
+       { rank: 8, name: "Munkh", referrals: 9, data: "31GB" },
+       { rank: 9, name: "Oyun", referrals: 8, data: "30GB" },
+       { rank: 10, name: "Bat", referrals: 7, data: "27GB" },
+       { rank: 11, name: "Enkh", referrals: 6, data: "27GB" },
+       { rank: 12, name: "Dulmaa", referrals: 6, data: "25GB" },
+       { rank: 13, name: "Ganbat", referrals: 5, data: "24GB" },
+       { rank: 14, name: "Nyamka", referrals: 5, data: "22GB" },
        { rank: 15, name: "Tsetseg", referrals: 4, data: "20GB" },
-       { rank: 16, name: "Urnaa", referrals: 4, data: "20GB" },
-       { rank: 17, name: "Bold", referrals: 3, data: "15GB" },
-       { rank: 18, name: "Altan", referrals: 3, data: "15GB" },
-       { rank: 19, name: "Saran", referrals: 2, data: "10GB" },
-       { rank: 20, name: "Zoloo", referrals: 2, data: "10GB" },
    ].sort((a, b) => b.referrals - a.referrals);
    const TIER_DATA = [
-       { name: "Bronze", referrals: 1, reward: "3GB Data", icon: "🥉", color: "text-amber-600", description: "Start your journey to amazing rewards." },
-       { name: "Silver", referrals: 10, reward: "5GB Data & 5% Discount", icon: "🥈", color: "text-gray-400", description: "Unlock more data and a discount on your next purchase." },
-       { name: "Gold", referrals: 20, reward: "10GB Data & 10% Discount", icon: "🥇", color: "text-yellow-400", description: "Reach for gold to get substantial data and discounts!" },
+       { name: "Bronze", referrals: 1, reward: "1GB Дата", icon: "🥉", color: "text-amber-600", description: "Бэлэг дүүрэн урамшууллын аяллаа эхлүүлээрэй." },
+       { name: "Silver", referrals: 20, reward: "3GB Дата & Купон", icon: "🥈", color: "text-gray-400", description: "Танд хэрэгтэй купонууд" },
+       { name: "Gold", referrals: 30, reward: "5GB Дата & Купон", icon: "🥇", color: "text-yellow-400", description: "Илүү Дата, Илүү Купон, Илүү их Бэлэгнүүд" },
    ];
    const CURRENT_TIER = "Silver";
-   const REDEEM_PRIZE = "5GB DATA 3 DAYS";
+   const REDEEM_PRIZE = "3GB Дата & Купон";
    const REWARDS_DATA = [
-       { type: "coupon", name: "Coffee Voucher", value: "20% OFF", icon: "☕", expires: "2025.12.30", color: "bg-blue-600" },
-       { type: "data", name: "HiTone", value: "3 Month", icon: "📡", expires: "2025.11.15", color: "bg-green-600" },
-       { type: "discount", name: "Apple Music", value: "1 Month", icon: "🎵", expires: "2025.11.01", color: "bg-purple-600" },
-       { type: "coupon", name: "VOO coupon", value: "1 Month", icon: "🎥", expires: "2025.12.01", color: "bg-orange-600" },
+       { type: "coupon", name: "Coffee Voucher", value: "20% Хямдрал", icon: "☕", expires: "2025.12.30", color: "bg-blue-600" },
+       { type: "data", name: "HiTone", value: "3 Сар", icon: "📡", expires: "2025.11.15", color: "bg-green-600" },
+       { type: "discount", name: "Бусад сүлжээнд үнэгүй ярих", value: "5 Минут", icon: "📞", expires: "2025.11.01", color: "bg-purple-600" },
+       { type: "coupon", name: "VOO coupon", value: "1 Сар", icon: "🎥", expires: "2025.12.01", color: "bg-orange-600" },
        { type: "data", name: "5GB Gaming Data", value: "5GB", icon: "📶", expires: "2025.10.20", color: "bg-red-600" },
-       { type: "discount", name: "Emart", value: "15% OFF", icon: "🛒", expires: "2025.11.04", color: "bg-yellow-600" },
+       { type: "discount", name: "Emart", value: "15% Хямдрал", icon: "🛒", expires: "2025.11.04", color: "bg-yellow-600" },
        { type: "data", name: "1GB 1DAY", value: "1GB", icon: "🚀", expires: "2025.12.10", color: "bg-teal-600" },
-       { type: "coupon", name: "IMAX Ticket", value: "Free Ticket", icon: "🎬", expires: "2025.10.28", color: "bg-pink-600" },
+       { type: "coupon", name: "Сүлжээндэ үнэгүй ярих", value: "5 Минут", icon: "☎", expires: "2025.10.28", color: "bg-pink-600" },
    ];
    const LEADERBOARD_PRIZES = [
-       { rank: "1st Place", prize: "30GB 30DAY + 30% + VIP Voucher", icon: "👑", color: "text-red-400" },
-       { rank: "2nd Place", prize: "20GB 20DAY + 20% + Coupon", icon: "🥈", color: "text-blue-400" },
-       { rank: "3rd Place", prize: "10GB 10DAY + 10% + Coupon", icon: "🥉", color: "text-green-400" },
+       { rank: "1st Place", prize: "30GB 30DAY + VIP Voucher", icon: "👑", color: "text-red-400" },
+       { rank: "2nd Place", prize: "20GB 25DAY + Coupon", icon: "🥈", color: "text-blue-400" },
+       { rank: "3rd Place", prize: "10GB 15DAY + Coupon", icon: "🥉", color: "text-green-400" },
        { rank: "4 - 5 Place", prize: "Unlimited Social Data", icon: "🎁", color: "text-yellow-400" },
-       { rank: "6 - 10 Place", prize: "VOO 50% Discount", icon: "⭐", color: "text-gray-400" },
+       { rank: "6 - 10 Place", prize: "VOO 30% Discount", icon: "⭐", color: "text-gray-400" },
    ];
 
    // --- Utility Functions (No changes to logic) ---
@@ -567,7 +562,7 @@
 <h3 class="font-bold text-md text-white mb-1">${reward.name}</h3>
 <p class="text-sm text-red-400 font-semibold mb-2">${reward.value}</p>
 <p class="text-xs text-gray-400">Exp: ${reward.expires}</p>
-<button class="mt-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-1 px-3 rounded-full transition-colors">USE NOW</button>
+<button class="mt-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-1 px-3 rounded-full transition-colors">Ашиглах</button>
 </div>
            `;
            rewardsGrid.insertAdjacentHTML('beforeend', html);
@@ -1021,50 +1016,50 @@
 <div class="container">
 
     <div class="input-group">
-        <label for="phone-number" class="input-label">Phone number:</label>
+        <label for="phone-number" class="input-label">Утасны дугаар:</label>
         <input type="text" id="phone-number" class="text-input" value="99904196" readonly>
     </div>
     
     <div class="tabs">
-        <div class="tab-item active">Promotional</div>
-        <div class="tab-item">Entertainment</div>
+        <div class="tab-item active">Нэмэлт</div>
+        <div class="tab-item">Энтэртайнмент</div>
     </div>
     
-    <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 15px;">Additional Data Packages:</h2>
+    <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 15px;">Нэмэлт дата багцууд:</h2>
     
     <div class="package-grid" id="package-grid">
-        <div class="package-card" data-data="3GB" data-duration="3 DAY" data-price="3,000₮">
-            <div class="package-duration">3 DAY</div>
+        <div class="package-card" data-data="3GB" data-duration="3 Өдөр" data-price="3,000₮">
+            <div class="package-duration">3 Өдөр</div>
             <div class="package-data">3GB</div>
             <div class="package-price">3,000₮</div>
             <div class="package-arrow">&rsaquo;</div>
         </div>
-        <div class="package-card" data-data="5GB" data-duration="5 DAY" data-price="5,000₮">
-            <div class="package-duration">5 DAY</div>
+        <div class="package-card" data-data="5GB" data-duration="5 Өдөр" data-price="5,000₮">
+            <div class="package-duration">5 Өдөр</div>
             <div class="package-data">5GB</div>
             <div class="package-price">5,000₮</div>
             <div class="package-arrow">&rsaquo;</div>
         </div>
-        <div class="package-card" data-data="7GB" data-duration="7 DAY" data-price="7,000₮">
-            <div class="package-duration">7 DAY</div>
+        <div class="package-card" data-data="7GB" data-duration="7 Өдөр" data-price="7,000₮">
+            <div class="package-duration">7 Өдөр</div>
             <div class="package-data">7GB</div>
             <div class="package-price">7,000₮</div>
             <div class="package-arrow">&rsaquo;</div>
         </div>
-        <div class="package-card" data-data="15GB" data-duration="15 DAY" data-price="15,000₮">
-            <div class="package-duration">15 DAY</div>
+        <div class="package-card" data-data="15GB" data-duration="15 Өдөр" data-price="15,000₮">
+            <div class="package-duration">15 Өдөр</div>
             <div class="package-data">15GB</div>
             <div class="package-price">15,000₮</div>
             <div class="package-arrow">&rsaquo;</div>
         </div>
-        <div class="package-card" data-data="25GB" data-duration="30 DAY" data-price="25,000₮">
-            <div class="package-duration">30 DAY</div>
+        <div class="package-card" data-data="25GB" data-duration="30 Өдөр" data-price="25,000₮">
+            <div class="package-duration">30 Өдөр</div>
             <div class="package-data">25GB</div>
             <div class="package-price">25,000₮</div>
             <div class="package-arrow">&rsaquo;</div>
         </div>
-        <div class="package-card" data-data="70GB" data-duration="30 DAY" data-price="65,000₮">
-            <div class="package-duration">30 DAY</div>
+        <div class="package-card" data-data="70GB" data-duration="30 Өдөр" data-price="65,000₮">
+            <div class="package-duration">30 Өдөр</div>
             <div class="package-data">70GB</div>
             <div class="package-price">65,000₮</div>
             <div class="package-arrow">&rsaquo;</div>
@@ -1074,40 +1069,40 @@
     <!-- Referral Section - Now properly hidden initially -->
     <div id="referral-section">
         <div class="input-group referral-input-group">
-            <label for="referral-code" class="input-label">Referral Code (Optional):</label>
-            <input type="text" id="referral-code" class="referral-input" placeholder="Enter friend's code here...">
+            <label for="referral-code" class="input-label">Урилгын код:</label>
+            <input type="text" id="referral-code" class="referral-input" placeholder="Найзынхаа мобикодыг оруулна уу...">
         </div>
         <div class="bonus-message">
-            <span class="bonus-icon">✔</span> You'll get  <strong>  3GB  </strong>  bonus data!
+            <span class="bonus-icon">✔</span> Танд   <strong>   1GB1DAY   </strong>   бонус дата нэмэгдэнэ!
         </div>
     </div>
     
     <!-- Purchase Button - Now properly hidden initially -->
-    <button class="purchase-btn" id="purchase-btn" disabled>PURCHASE Select a package</button>
+    <button class="purchase-btn" id="purchase-btn" disabled></button>
 </div>
 
 <div id="modal-overlay">
     <div id="confirmation-modal">
-        <div class="confirmation-title">Purchase Confirmed</div>
+        <div class="confirmation-title">ТӨЛБӨР ТӨЛӨГДСӨН</div>
         <div class="confirmation-details">
             <div class="detail-item">
-                <span class="detail-label">Package:</span>
+                <span class="detail-label">Багц:</span>
                 <span class="detail-value" id="modal-package-detail"></span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">Price:</span>
+                <span class="detail-label">Үнэ:</span>
                 <span class="detail-value" id="modal-price-detail"></span>
             </div>
             <div class="detail-item">
-                <span class="detail-label">Bonus Data:</span>
-                <span class="detail-value" style="color: var(--success-green);" id="modal-bonus-detail">3GB, 2 Day</span>
+                <span class="detail-label">Бонус Дата:</span>
+                <span class="detail-value" style="color: var(--success-green);" id="modal-bonus-detail">1GB, 1Day</span>
             </div>
             <div class="detail-item">
-                <span class="detail-total-label">Total Data:</span>
+                <span class="detail-total-label">Нийт:</span>
                 <span class="detail-total-value" id="modal-total-data"></span>
             </div>
         </div>
-        <button class="modal-ok-btn" onclick="closeConfirmation()">OKAY</button>
+        <button class="modal-ok-btn" onclick="closeConfirmation()">БУЦАХ</button>
     </div>
 </div>
 
@@ -1123,7 +1118,7 @@
     const modalTotalData = document.getElementById('modal-total-data');
     
     // Constant for Bonus Data
-    const BONUS_GB = 3;
+    const BONUS_GB = 1;
     let selectedPackage = null;
 
     // Handle package card clicks
@@ -1252,15 +1247,15 @@
 <h1 class="text-xl font-semibold">REDEEM CODE</h1>
 </div>
 <div class="flex-grow space-y-6">
-<p class="text-gray-400 text-sm">Please enter your promotional or prize code below to redeem your reward.</p>
+<p class="text-gray-400 text-sm">Доорх талбарт урамшууллын эсвэл шагналын кодоо оруулж бэлгээ идэвхжүүлнэ үү..</p>
 <!-- Input Box -->
-<input type="text" id="redeem-input" placeholder="Enter code here"
+<input type="text" id="redeem-input" placeholder="Энд кодоо оруулна уу"
                           class="w-full p-4 rounded-xl bg-secondary-contrast border-2 border-[#1a3355] focus:border-[#ff5252] focus:outline-none text-white placeholder-gray-500 font-mono tracking-wider text-lg">
 <!-- Redeem Button -->
 <button id="btn-redeem-submit"
                            class="w-full p-4 rounded-xl font-bold text-lg uppercase accent-red-bg"
                            style="box-shadow: 0 4px 10px rgba(255, 82, 82, 0.4);">
-                       REDEEM
+                       Идэвхжүүлэх
 </button>
 </div>
 </div>
@@ -1295,7 +1290,7 @@
 <div id="referral-input-container" class="space-y-2 mb-6">
 <input type="text" id="vas-referral-code" placeholder="Урамшууллын код"
                       class="w-full p-3 rounded-lg bg-secondary-contrast border-2 border-[#1a3355] focus:border-[#ff5252] focus:outline-none text-white placeholder-gray-500 text-sm">
-<p class="text-xs text-gray-400">Use referral code and get gifts!</p>
+<p class="text-xs text-gray-400">Найзынхаа Мобикодыг ашиглаарай!</p>
 </div>
 <!-- Action Button -->
 <button id="vas-activate-btn" class="w-full p-4 rounded-xl font-bold text-lg accent-red-bg mt-auto">
@@ -1325,9 +1320,9 @@
 <div id="reward-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-[65] flex items-center justify-center p-4">
 <div class="bg-secondary-contrast w-full max-w-sm p-8 rounded-xl text-center shadow-2xl border-2 border-[#ff5252] transform scale-95 transition-all duration-300">
 <p class="text-4xl mb-4">🎁</p>
-<h2 class="text-xl font-bold accent-red-text mb-2">GIFT RECEIVED!</h2>
+<h2 class="text-xl font-bold accent-red-text mb-2">БАЯХ ХҮРГЭЕ!</h2>
 <p class="text-lg font-extrabold text-white" id="reward-text">Voucher: 5GB Data</p>
-<p class="text-sm text-gray-400 mt-4">Таны урамшууллын код амжилттай хэрэглэгдлээ. Та шагналын хэсгээс (Reward section) бэлгээ авна уу.</p>
+<p class="text-sm text-gray-400 mt-4">Таны redeem код амжилттай хэрэглэгдлээ. Та Шагнал цэснээс (Reward section) бэлгээ авна уу.</p>
 <button class="mt-6 p-2 px-6 rounded-lg accent-red-bg font-semibold text-white transition-colors" onclick="document.getElementById('reward-modal').classList.add('hidden');">
                ШАГНАЛ РУУ ОЧИХ
 </button>
