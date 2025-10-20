@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobicom Integrated App UI (Complete)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+       /* --- CORE STYLES MATCHING THE NEW BLUE CONTRAST THEME --- */
+       /* 1. Base Colors (Dark Blue/Navy Theme) */
+       body {
+           background-color: #0b1a2d; /* Very Dark Blue Fallback */
+           font-family: 'Inter', sans-serif;
+           color: white;
+           /* Multi-layered Gradient for Enhanced Aesthetic Contrast */
+           background-image: radial-gradient(at center top, #3b5a8c 0%, #1e3a5f 30%, #0b1a2d 80%);
+           background-attachment: fixed;
+       }
+       /* Main Screen Card/Container - Max Width is 420px */
+       .app-container {
+           width: 100%;
+           max-width: 420px;
+           margin: 0 auto;
+           min-height: 100vh;
+           background-color: #11223b; /* Slightly lighter Navy background for the inner border */
+       }
+       /* NEW: Sectional Card Style - Greyish-Blue background for the 3 main parts */
+       .section-card {
+           background-color: #283e58; /* New Greyish Blue Contrast */
+           padding: 1rem;
+           border-radius: 1rem;
+           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+       }
+       /* Secondary background (for quick services, input fields, etc.) */
+       .bg-secondary-contrast {
+           background-color: #1a3355; /* Medium Blue for contrast */
+           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+       }
+       /* 2. Accent Colors (Red/Coral) */
+       .accent-red-text {
+           color: #ff5252; /* Bright Red/Coral text accent */
+       }
+       .accent-red-bg {
+           background-color: #ff5252; /* Bright Red/Coral background accent */
+           color: white;
+           transition: background-color 0.2s;
+       }
+       .accent-red-bg:hover {
+           background-color: #e04444;
+       }
+       /* 3. Quick Services Button Style */
+       .quick-service-btn {
+           height: 90px;
+           width: 100%;
+           border-radius: 1rem;
+           display: flex;
+           flex-direction: column;
+           justify-content: center;
+           align-items: center;
+           background-color: #1a3355;
+           transition: transform 0.1s, background-color 0.1s;
+       }
+       .quick-service-btn:hover {
+           transform: translateY(-2px);
+           background-color: #2a4e7e;
+       }
+       .quick-service-btn span {
+           font-size: 0.75rem;
+           margin-top: 0.4rem;
+           font-weight: 500;
+           color: #ccc;
+       }
+       /* Data Progress Circle styling */
+       .data-circle {
+           border-color: #1a3355;
+           box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+       }
+       /* 4. Custom Scrollbar */
+       .custom-scrollbar::-webkit-scrollbar {
+           width: 4px;
+       }
+       .custom-scrollbar::-webkit-scrollbar-thumb {
+           background-color: #3b5a8c;
+           border-radius: 2px;
+       }
+       .custom-scrollbar::-webkit-scrollbar-track {
+           background: #11223b;
+       }
+       /* --- VAS Specific Styles --- */
+       .vas-card {
+           background-color: #1a3355; /* Secondary Contrast Blue */
+           padding: 1rem;
+           border-radius: 1rem;
+           display: flex;
+           flex-direction: column;
+           align-items: center;
+           justify-content: space-between;
+           text-align: center;
+           min-height: 140px;
+           position: relative;
+           cursor: pointer;
+           transition: background-color 0.15s;
+       }
+       .vas-card:hover {
+           background-color: #2a4e7e;
+       }
+       .vas-card p {
+           margin-top: auto;
+       }
+       /* Custom Toggle Switch */
+       .toggle-switch {
+           position: absolute;
+           top: 10px;
+           right: 10px;
+           display: inline-block;
+           width: 38px;
+           height: 20px;
+       }
+       .toggle-switch input {
+           opacity: 0;
+           width: 0;
+           height: 0;
+       }
+       .slider {
+           position: absolute;
+           cursor: pointer;
+           top: 0;
+           left: 0;
+           right: 0;
+           bottom: 0;
+           background-color: #556885; /* Off state color */
+           transition: .4s;
+           border-radius: 20px;
+       }
+       .slider:before {
+           position: absolute;
+           content: "";
+           height: 14px;
+           width: 14px;
+           left: 3px;
+           bottom: 3px;
+           background-color: white;
+           transition: .4s;
+           border-radius: 50%;
+       }
+       input:checked + .slider {
+           background-color: #ff5252; /* On state color (Accent Red) */
+       }
+       input:checked + .slider:before {
+           transform: translateX(18px);
+       }
+       /* Added for the second modal */
+       #reward-modal {
+           z-index: 65; /* Higher than prize-modal */
+       }
+</style>
+</head>
+<body class="flex items-center justify-center">
+<!-- MAIN APPLICATION CONTAINER (Switches content based on view) -->
+<div id="main-app" class="app-container custom-scrollbar overflow-y-auto">
+<!-- 1. HOME SCREEN (Visible by default) -->
+<div id="view-home" class="p-4 space-y-4 w-full">
+<!-- SECTION CARD 1: HEADER, BALANCES, AND DATA -->
+<div class="section-card space-y-4">
+<!-- Top Bar / Header -->
+<div class="flex justify-between items-center pt-2 pb-4">
+<h1 class="text-xl font-bold text-white">mobicom</h1>
+<div class="flex space-x-4">
+<!-- Gift Icon (for Leaderboard/Prizes) -->
+<svg class="w-6 h-6 text-white cursor-pointer accent-red-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2-3-.895-3-2 .895-3 2-3zM2 12h.01M22 12h.01M16.92 18H7.08c-.785 0-1.5-.478-1.848-1.22l-1.41-3.14a.8.8 0 010-.76l-1.41-3.14C5.58 8.478 6.3 8 7.08 8h9.84c.785 0 1.5.478 1.848 1.22l1.41 3.14a.8.8 0 010 .76l-1.41 3.14c-.348.742-1.063 1.22-1.848 1.22zM12 18v4m0-4l-3-3m3 3l3-3"></path></svg>
+<!-- Notification Bell -->
+<svg class="w-6 h-6 text-white cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341A6.002 6.002 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+<!-- Profile/User Icon -->
+<svg class="w-6 h-6 text-white cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+</div>
+</div>
+<!-- Balances Section -->
+<div class="space-y-3 pt-2">
+<div class="space-y-2 text-sm text-gray-300">
+<div class="flex items-center"><span class="mr-2">📱</span> 18'000 нэгж</div>
+<div class="flex items-center"><span class="mr-2">📞</span> Сүлжэээндээ ♾️</div>
+<div class="flex items-center"><span class="mr-2">🌎</span> 5GB дата</div>
+</div>
+<div class="flex items-start pt-4 gap-4">
+<!-- 1. Payment Card -->
+<div class="bg-secondary-contrast p-3 rounded-xl shadow-md flex-1">
+<p class="text-xs text-gray-400 mb-2">Төлбөрийн мэдээлэл</p>
+<p class="text-2xl font-bold text-white mb-3">15'000₮</p>
+<button class="w-full p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-sm font-semibold transition-colors">
+                               Төлбөр төлөх
+</button>
+</div>
+<!-- 2. Data Circle Container -->
+<div class="flex-1 flex justify-center relative">
+<div class="w-32 h-32 rounded-full border-4 data-circle flex items-center justify-center relative">
+<!-- Progress Arc Placeholder -->
+<div class="absolute w-full h-full rounded-full border-4 border-transparent border-t-[#ff5252] rotate-45" style="clip: rect(0, 160px, 80px, 0);"></div>
+<div class="text-center">
+<p class="text-xl font-extrabold text-white">1.77GB</p>
+<p class="text-xs accent-red-text">-3.23GB</p>
+<p class="text-xs text-gray-400 mt-1">Үлдсэн дата</p>
+</div>
+</div>
+</div>
+</div>
+<button class="p-2 px-4 rounded-full bg-secondary-contrast text-sm font-semibold accent-red-text border border-transparent hover:border-[#ff5252] transition-colors">
+                       Бусад дата >
+</button>
+</div>
+</div>
+<!-- END SECTION CARD 1 -->
+<!-- SECTION CARD 2: QUICK SERVICES -->
+<div class="section-card">
+<!-- Quick Services Section -->
+<div>
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-lg font-semibold">Хялбар үйлчилгээ</h2>
+<svg class="w-5 h-5 text-gray-400 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+</div>
+<div class="grid grid-cols-4 gap-3 text-white text-center">
+<!-- 1. Referral Hub -->
+<button class="quick-service-btn" onclick="showView('referral-hub')">
+<svg class="w-6 h-6 accent-red-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM12 17H5a2 2 0 00-2 2v2h18v-2a2 2 0 00-2-2h-5z"></path></svg>
+<span class="accent-red-text">Ref Hub</span>
+</button>
+<!-- 2. Redeem -->
+<button class="quick-service-btn" onclick="showView('redeem-code')">
+<svg class="w-6 h-6 accent-red-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
+<span class="accent-red-text">Redeem</span>
+</button>
+<!-- 3. Data -->
+<button class="quick-service-btn" onclick="showView('data-purchase')">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18.5V3m0 0l-4 4m4-4l4 4"></path></svg>
+<span>Data</span>
+</button>
+<!-- 4. VAS (Value Added Service) -->
+<button class="quick-service-btn" onclick="showView('vas')">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v14L9 19zm0 0c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zm12-3c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zM9 9v10m12-14v10"></path></svg>
+<span>VAS</span>
+</button>
+</div>
+</div>
+</div>
+<!-- END SECTION CARD 2 -->
+<!-- SECTION CARD 3: MOBILIFE BANNER -->
+<div class="section-card">
+<div class="w-full h-32 rounded-xl" style="background-color: #e04444;">
+<div class="h-full flex flex-col justify-center items-center p-3">
+<h3 class="text-3xl font-extrabold text-white">mobilife</h3>
+<p class="text-sm text-white font-medium">powered by connectlife</p>
+<p class="text-xs text-white opacity-70 mt-2">таны хамгийн үнэтэй зүйлийг хамгаална.</p>
+</div>
+</div>
+</div>
+<!-- END SECTION CARD 3 -->
+<!-- Bottom Padding -->
+<div class="h-20"></div>
+</div>
+
+<!-- 2. REFERRAL HUB SCREEN (Starts hidden) -->
+<div id="view-referral-hub" class="hidden p-4">
+<div class="flex items-center mb-6">
+<button onclick="showView('home')">
+<svg class="w-6 h-6 text-white mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+</button>
+<h1 class="text-xl font-semibold">REFERRAL HUB</h1>
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invite & Rewards System (Full Dark Blue Theme)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+       /* Custom scrollbar for a cleaner look */
+       .custom-scrollbar::-webkit-scrollbar {
+           width: 4px;
+       }
+       .custom-scrollbar::-webkit-scrollbar-thumb {
+           background-color: #3b4e6a; /* Darker blue scrollbar */
+           border-radius: 2px;
+       }
+       .custom-scrollbar::-webkit-scrollbar-track {
+           background: #1a1a2e; /* Main background color */
+       }
+       /* Full Dark Blue Theme Styles */
+       body {
+           background-color: #1a1a2e; /* Dark Navy Blue */
+       }
+       .card {
+           background-color: #1a1a2e; /* Main card/section background (Slightly lighter dark blue) */
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+           border-radius: 1rem;
+       }
+       .bg-dark-gray {
+           background-color: #233e63; /* Background for sub-elements like history items/buttons (Mid dark blue) */
+       }
+       /* Red/Coral Accent Colors */
+       .btn-primary {
+           background-color: #ff5252; /* Bright Red/Coral accent */
+           color: white;
+           transition: background-color 0.2s;
+       }
+       .btn-primary:hover {
+           background-color: #e04444;
+       }
+       .btn-secondary {
+           background-color: #233e63; /* Mid dark blue for secondary button */
+           border: 1px solid #3b4e6a; /* Darker blue border */
+           color: #ccc;
+           transition: background-color 0.2s, border-color 0.2s;
+       }
+       .btn-secondary:hover {
+           background-color: #2b4870;
+       }
+       .active-tab {
+           color: #ff5252; /* Active text color is the accent */
+           font-weight: 600;
+       }
+       .tab-button {
+            color: #a0a0a0;
+            padding-bottom: 0.75rem;
+       }
+       .tab-button:hover:not(.active-tab) {
+           color: #ffffff;
+       }
+       .code-box {
+           background-color: #233e63;
+           border: 1px solid #3b4e6a;
+       }
+       .tap-to-copy {
+           color: #ff5252;
+       }
+</style>
+</head>
+<body class="p-4 flex items-center justify-center min-h-screen">
+<div id="main-ui" class="card w-full max-w-sm p-4 text-white">
+<div class="flex justify-start items-center mb-6">
+<svg class="w-6 h-6 mr-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+<h1 id="header-title" class="text-xl font-semibold">INVITE FRIEND</h1>
+</div>
+<div class="flex justify-between text-sm mb-6">
+<button id="tab-invite" class="tab-button flex-1 py-3 text-center transition-colors font-medium active-tab" data-target="invite">INVITE</button>
+<button id="tab-leaderboard" class="tab-button flex-1 py-3 text-center transition-colors font-medium" data-target="leaderboard">LEADERBOARD</button>
+<button id="tab-rewards" class="tab-button flex-1 py-3 text-center transition-colors font-medium" data-target="rewards">REWARDS</button>
+</div>
+<div id="content-invite" class="tab-content space-y-4">
+<div class="text-center mb-6">
+<p class="text-gray-400 text-sm mb-2">YOUR REFERRAL CODE</p>
+<div class="code-box p-3 rounded-lg flex justify-center items-center">
+<span id="referral-code" class="text-3xl font-extrabold text-white tracking-wider">X104DSJT</span>
+</div>
+<button id="btn-copy" class="tap-to-copy mt-2 text-sm font-medium">Tap to copy code</button>
+</div>
+<div class="flex justify-around items-center mb-6 text-center text-sm">
+<div>
+<div class="flex items-center justify-center text-white font-bold text-lg">
+<svg class="w-5 h-5 mr-1 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 3
+</div>
+<p class="text-gray-400">Friends Referred</p>
+</div>
+<div class="h-10 border-l border-[#3b4e6a]"></div>
+<div>
+<div class="flex items-center justify-center text-white font-bold text-lg">
+<svg class="w-5 h-5 mr-1 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg> 15GB
+</div>
+<p class="text-gray-400">Earned Data</p>
+</div>
+</div>
+<div class="flex space-x-3 mb-6">
+<button id="btn-invite-friends" class="btn-primary flex-1 p-3 rounded-xl font-bold text-sm uppercase"> INVITE FRIENDS </button>
+<button id="btn-leaderboard-main" class="btn-secondary flex-1 p-3 rounded-xl font-bold text-sm uppercase"> LEADERBOARD </button>
+</div>
+<div id="tier-info-card" class="bg-dark-gray p-4 rounded-xl cursor-pointer hover:bg-[#2b4870] transition-colors">
+<p class="text-red-400 text-sm">Tier Progress</p>
+<div class="flex items-center justify-between mt-1 mb-3">
+<p class="text-2xl font-bold text-gray-400 flex items-center">
+<span class="mr-2">🥈</span> SILVER
+</p>
+<svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+</div>
+<div class="h-2 bg-[#3b4e6a] rounded-full mb-1">
+<div class="h-2 bg-red-500 rounded-full" style="width: 40%;"></div>
+</div>
+<p class="text-xs text-gray-400">40% - 2/5 referrals to <span class="text-yellow-400 font-semibold">Gold Tier</span></p>
+</div>
+<div class="mt-6">
+<p class="text-sm font-semibold mb-3">Rewards History</p>
+<div class="space-y-2 text-sm custom-scrollbar max-h-40 overflow-y-auto">
+<div class="flex justify-between p-3 bg-dark-gray rounded-xl">
+<span class="text-gray-400">2024.02.10</span>
+<span class="text-red-400 font-semibold">+5GB (Data purchase)</span>
+</div>
+<div class="flex justify-between p-3 bg-dark-gray rounded-xl">
+<span class="text-gray-400">2024.02.08</span>
+<span class="text-red-400 font-semibold">+5GB (Data package)</span>
+</div>
+<div class="flex justify-between p-3 bg-dark-gray rounded-xl">
+<span class="text-gray-400">2024.02.05</span>
+<span class="text-red-400 font-semibold">+5GB (VAS purchase)</span>
+</div>
+</div>
+</div>
+</div>
+<div id="content-leaderboard" class="tab-content hidden space-y-4">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-lg font-semibold">Weekly Top Referrers</h2>
+<button id="btn-leaderboard-prizes" class="text-sm font-semibold text-red-400 hover:text-red-300 transition-colors py-1 px-3 rounded-full bg-dark-gray border border-red-400">Prizes</button>
+</div>
+<div id="leaderboard-list" class="space-y-2 custom-scrollbar max-h-72 overflow-y-auto">
+</div>
+<div class="mt-6 p-3 bg-dark-gray rounded-xl text-center">
+<p class="text-sm">Your Position: <span class="text-red-400 font-bold">#15</span> (4 referrals)</p>
+<p class="text-xs text-gray-400">3 more to reach Top 10!</p>
+</div>
+<div class="mt-4 text-center text-xs text-gray-500">
+<p>Time remaining: <span class="text-red-400 font-semibold">2 days 15 hours</span></p>
+</div>
+</div>
+<div id="content-rewards" class="tab-content hidden">
+<h2 class="text-lg font-semibold mb-4">Your Rewards</h2>
+<div class="grid grid-cols-2 gap-4 custom-scrollbar max-h-96 overflow-y-auto pr-2">
+</div>
+</div>
+</div>
+</div>
+<div id="tier-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+<div class="card w-full max-w-md p-6 relative">
+<button id="close-tier-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+</button>
+<h2 class="text-2xl font-bold text-red-400 mb-6 text-center">Referral Tiers</h2>
+<div id="tiers-list" class="space-y-4 custom-scrollbar max-h-96 overflow-y-auto pb-4">
+</div>
+<p class="text-center text-sm text-gray-400 mt-4">Keep inviting friends to unlock better rewards!</p>
+</div>
+</div>
+<div id="prizes-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+<div class="card w-full max-w-md p-6 relative">
+<button id="close-prizes-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+</button>
+<h2 class="text-2xl font-bold mb-6 text-center text-red-400">Leaderboard Prizes</h2>
+<div id="prizes-list" class="space-y-3 custom-scrollbar max-h-96 overflow-y-auto pb-4">
+</div>
+<p class="text-center text-xs text-gray-400 mt-4">Prizes are distributed weekly to the Top 5.</p>
+</div>
+</div>
+<script>
+   // --- Data Mockup (No changes) ---
+   const REFERRAL_CODE = 'X104DSJT';
+   const LEADERBOARD_DATA = [
+       { rank: 1, name: "Bataa", referrals: 28, data: "140GB", color: "text-red-400" },
+       { rank: 2, name: "Nomiin", referrals: 25, data: "125GB", color: "text-blue-400" },
+       { rank: 3, name: "Tugsuu", referrals: 22, data: "110GB", color: "text-green-400" },
+       { rank: 4, name: "Khulan", referrals: 18, data: "90GB" },
+       { rank: 5, name: "Anand", referrals: 15, data: "75GB" },
+       { rank: 6, name: "Bileguun", referrals: 12, data: "60GB" },
+       { rank: 7, name: "Saruul", referrals: 10, data: "50GB" },
+       { rank: 8, name: "Munkh", referrals: 9, data: "45GB" },
+       { rank: 9, name: "Oyun", referrals: 8, data: "40GB" },
+       { rank: 10, name: "Bat", referrals: 7, data: "35GB" },
+       { rank: 11, name: "Enkh", referrals: 6, data: "30GB" },
+       { rank: 12, name: "Dulmaa", referrals: 6, data: "30GB" },
+       { rank: 13, name: "Ganbat", referrals: 5, data: "25GB" },
+       { rank: 14, name: "Nyamka", referrals: 5, data: "25GB" },
+       { rank: 15, name: "Tsetseg", referrals: 4, data: "20GB" },
+       { rank: 16, name: "Urnaa", referrals: 4, data: "20GB" },
+       { rank: 17, name: "Bold", referrals: 3, data: "15GB" },
+       { rank: 18, name: "Altan", referrals: 3, data: "15GB" },
+       { rank: 19, name: "Saran", referrals: 2, data: "10GB" },
+       { rank: 20, name: "Zoloo", referrals: 2, data: "10GB" },
+   ].sort((a, b) => b.referrals - a.referrals);
+   const TIER_DATA = [
+       { name: "Bronze", referrals: 1, reward: "3GB Data", icon: "🥉", color: "text-amber-600", description: "Start your journey to amazing rewards." },
+       { name: "Silver", referrals: 10, reward: "5GB Data & 5% Discount", icon: "🥈", color: "text-gray-400", description: "Unlock more data and a discount on your next purchase." },
+       { name: "Gold", referrals: 20, reward: "10GB Data & 10% Discount", icon: "🥇", color: "text-yellow-400", description: "Reach for gold to get substantial data and discounts!" },
+   ];
+   const CURRENT_TIER = "Silver";
+   const REDEEM_PRIZE = "5GB DATA 3 DAYS";
+   const REWARDS_DATA = [
+       { type: "coupon", name: "Coffee Voucher", value: "20% OFF", icon: "☕", expires: "2025.12.30", color: "bg-blue-600" },
+       { type: "data", name: "HiTone", value: "3 Month", icon: "📡", expires: "2025.11.15", color: "bg-green-600" },
+       { type: "discount", name: "Apple Music", value: "1 Month", icon: "🎵", expires: "2025.11.01", color: "bg-purple-600" },
+       { type: "coupon", name: "VOO coupon", value: "1 Month", icon: "🎥", expires: "2025.12.01", color: "bg-orange-600" },
+       { type: "data", name: "5GB Gaming Data", value: "5GB", icon: "📶", expires: "2025.10.20", color: "bg-red-600" },
+       { type: "discount", name: "Emart", value: "15% OFF", icon: "🛒", expires: "2025.11.04", color: "bg-yellow-600" },
+       { type: "data", name: "1GB 1DAY", value: "1GB", icon: "🚀", expires: "2025.12.10", color: "bg-teal-600" },
+       { type: "coupon", name: "IMAX Ticket", value: "Free Ticket", icon: "🎬", expires: "2025.10.28", color: "bg-pink-600" },
+   ];
+   const LEADERBOARD_PRIZES = [
+       { rank: "1st Place", prize: "30GB 30DAY + 30% + VIP Voucher", icon: "👑", color: "text-red-400" },
+       { rank: "2nd Place", prize: "20GB 20DAY + 20% + Coupon", icon: "🥈", color: "text-blue-400" },
+       { rank: "3rd Place", prize: "10GB 10DAY + 10% + Coupon", icon: "🥉", color: "text-green-400" },
+       { rank: "4 - 5 Place", prize: "Unlimited Social Data", icon: "🎁", color: "text-yellow-400" },
+       { rank: "6 - 10 Place", prize: "VOO 50% Discount", icon: "⭐", color: "text-gray-400" },
+   ];
+
+   // --- Utility Functions (No changes to logic) ---
+   function showTab(targetId) {
+       document.querySelectorAll('.tab-content').forEach(content => {
+           content.classList.add('hidden');
+       });
+       document.getElementById(`content-${targetId}`).classList.remove('hidden');
+       document.querySelectorAll('.tab-button').forEach(button => {
+           button.classList.remove('active-tab');
+       });
+       document.getElementById(`tab-${targetId}`).classList.add('active-tab');
+       document.getElementById('header-title').textContent = document.getElementById(`tab-${targetId}`).textContent;
+   }
+   function renderLeaderboard() {
+       const listContainer = document.getElementById('leaderboard-list');
+       listContainer.innerHTML = '';
+       LEADERBOARD_DATA.slice(0, 20).forEach((item, index) => {
+           const rankClasses = item.color ? item.color : 'text-gray-300';
+           const html = `
+<div class="flex justify-between items-center p-3 rounded-xl transition-colors bg-dark-gray">
+<div class="flex items-center">
+<span class="font-extrabold w-8 text-center ${rankClasses}">${item.rank}.</span>
+<span class="ml-2 font-medium">${item.name}</span>
+</div>
+<div class="text-right text-sm">
+<p class="font-bold text-red-400">${item.referrals} referrals</p>
+<p class="text-xs text-gray-400">${item.data}</p>
+</div>
+</div>
+           `;
+           listContainer.insertAdjacentHTML('beforeend', html);
+       });
+   }
+   function renderTierModal() {
+       const listContainer = document.getElementById('tiers-list');
+       listContainer.innerHTML = '';
+       TIER_DATA.forEach(tier => {
+           const isCurrent = tier.name === CURRENT_TIER;
+           // Updated BG and Border colors to reflect the new blue theme
+           const bgColor = isCurrent ? 'bg-red-900/40 border-red-500' : 'bg-dark-gray border-[#3b4e6a]';
+           const textColor = isCurrent ? 'text-red-400' : 'text-gray-300';
+           const html = `
+<div class="p-4 rounded-xl border ${bgColor}">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<span class="text-3xl mr-3">${tier.icon}</span>
+<div>
+<h3 class="font-bold text-xl ${textColor}">${tier.name}</h3>
+                               ${isCurrent ? '<p class="text-xs text-red-300 font-semibold">YOUR CURRENT TIER</p>' : `<p class="text-xs text-gray-400">Requires ${tier.referrals} referrals</p>`}
+</div>
+</div>
+<span class="font-bold text-sm text-red-400">${tier.reward}</span>
+</div>
+<p class="mt-2 text-sm text-gray-400">${tier.description}</p>
+</div>
+           `;
+           listContainer.insertAdjacentHTML('beforeend', html);
+       });
+   }
+   function renderRewards() {
+       const rewardsGrid = document.querySelector('#content-rewards > .grid');
+       rewardsGrid.innerHTML = '';
+       REWARDS_DATA.forEach(reward => {
+           const html = `
+<div class="relative bg-dark-gray rounded-xl p-4 flex flex-col items-center text-center shadow-lg transition-colors border border-transparent hover:border-red-500">
+<div class="w-12 h-12 rounded-full ${reward.color} flex items-center justify-center text-2xl mb-3">
+                       ${reward.icon}
+</div>
+<h3 class="font-bold text-md text-white mb-1">${reward.name}</h3>
+<p class="text-sm text-red-400 font-semibold mb-2">${reward.value}</p>
+<p class="text-xs text-gray-400">Exp: ${reward.expires}</p>
+<button class="mt-3 bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-1 px-3 rounded-full transition-colors">USE NOW</button>
+</div>
+           `;
+           rewardsGrid.insertAdjacentHTML('beforeend', html);
+       });
+   }
+   function renderPrizesModal() {
+       const prizesList = document.getElementById('prizes-list');
+       prizesList.innerHTML = '';
+       LEADERBOARD_PRIZES.forEach(item => {
+           const html = `
+<div class="p-4 rounded-xl bg-dark-gray flex items-center justify-between border-l-4 border-red-400">
+<div class="flex items-center space-x-3">
+<span class="text-xl ${item.color}">${item.icon}</span>
+<div>
+<p class="font-bold text-lg">${item.rank}</p>
+</div>
+</div>
+<p class="text-sm text-right text-red-400 font-semibold">${item.prize}</p>
+</div>
+           `;
+           prizesList.insertAdjacentHTML('beforeend', html);
+       });
+   }
+   // --- Event Listeners (No changes to logic) ---
+   document.addEventListener('DOMContentLoaded', () => {
+       showTab('invite');
+       renderLeaderboard();
+       renderRewards();    
+       document.querySelectorAll('.tab-button').forEach(button => {
+           button.addEventListener('click', () => {
+               showTab(button.getAttribute('data-target'));
+           });
+       });
+       document.getElementById('btn-copy').addEventListener('click', () => {
+           navigator.clipboard.writeText(REFERRAL_CODE).then(() => {
+               const copyButton = document.getElementById('btn-copy');
+               const originalText = copyButton.textContent;
+               copyButton.textContent = 'COPIED!';
+               setTimeout(() => {
+                   copyButton.textContent = originalText;
+               }, 1500);
+           }).catch(err => {
+               console.error('Could not copy text: ', err);
+               alert('Failed to copy code. Please copy manually: ' + REFERRAL_CODE);
+           });
+       });
+       document.getElementById('btn-leaderboard-main').addEventListener('click', () => {
+           showTab('leaderboard');
+       });
+       const tierModal = document.getElementById('tier-modal');
+       document.getElementById('tier-info-card').addEventListener('click', () => {
+           renderTierModal();
+           tierModal.classList.remove('hidden');
+       });
+       document.getElementById('close-tier-modal').addEventListener('click', () => {
+           tierModal.classList.add('hidden');
+       });
+       tierModal.addEventListener('click', (e) => {
+           if (e.target === tierModal) {
+               tierModal.classList.add('hidden');
+           }
+       });
+       const prizesModal = document.getElementById('prizes-modal');
+       document.getElementById('btn-leaderboard-prizes').addEventListener('click', () => {
+           renderPrizesModal();
+           prizesModal.classList.remove('hidden');
+       });
+       document.getElementById('close-prizes-modal').addEventListener('click', () => {
+           prizesModal.classList.add('hidden');
+       });
+       prizesModal.addEventListener('click', (e) => {
+           if (e.target === prizesModal) {
+               prizesModal.classList.add('hidden');
+           }
+       });
+       document.getElementById('btn-redeem-submit').addEventListener('click', () => {
+           const input = document.getElementById('redeem-input');
+           const prizeBox = document.getElementById('redeem-prize');
+           const prizeText = document.getElementById('prize-text');
+           if (input.value.trim().toUpperCase() === 'TESTCODE123') {
+               prizeText.textContent = REDEEM_PRIZE;
+               prizeBox.classList.remove('hidden');
+               input.value = '';
+               setTimeout(() => prizeBox.classList.add('hidden'), 5000);
+           } else {
+               prizeBox.classList.add('hidden');
+               alert('Invalid or expired redeem code. Please try again.');
+           }
+       });
+       document.getElementById('btn-invite-friends').addEventListener('click', () => {
+           alert('Initiating invite friends action! (Code: ' + REFERRAL_CODE + ')');
+       });
+   });
+</script>
+</body>
+</html>
+
+<!-- 3. DATA SCREEN (Starts hidden) -->
+<div id="view-data-purchase" class="hidden p-4">
+<div class="flex items-center mb-6">
+<button onclick="showView('home')">
+<svg class="w-6 h-6 text-white mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+</button>
+<h1 class="text-xl font-semibold">DATA MANAGEMENT</h1>
+</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Data Purchase</title>
+<style>
+    :root {
+        /* Consistent Color Palette */
+        --dark-background: #1A1A2E;
+        --card-background: #25253A;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0d0;
+        --accent-red: #E24C4C;
+        --input-background: #303045;
+        --border-color: #404055;
+        --shadow-color: rgba(0, 0, 0, 0.4);
+        --active-tab-bg: var(--accent-red);
+        --inactive-tab-bg: var(--input-background);
+        --success-green: #4CAF50;
+    }
+    
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--dark-background);
+        color: var(--text-primary);
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+    }
+    
+    .container {
+        padding: 20px;
+        max-width: 450px;
+        margin: 0 auto;
+    }
+    
+    /* Header and Navigation */
+    .header {
+        display: flex;
+        align-items: center;
+        padding-bottom: 20px;
+    }
+    
+    .back-button {
+        color: var(--text-primary);
+        font-size: 24px;
+        margin-right: 15px;
+        text-decoration: none;
+    }
+    
+    .page-title {
+        font-size: 18px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    /* Input Fields */
+    .input-group {
+        margin-bottom: 20px;
+    }
+    
+    .input-label {
+        font-size: 13px;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .text-input {
+        width: calc(100% - 30px);
+        padding: 12px 15px;
+        background-color: var(--input-background);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        color: var(--text-primary);
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+    
+    .text-input::placeholder {
+        color: var(--text-secondary);
+    }
+    
+    /* Tabs */
+    .tabs {
+        display: flex;
+        margin-bottom: 20px;
+        gap: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 5px;
+    }
+    
+    .tab-item {
+        flex-shrink: 0;
+        padding: 10px 18px;
+        background-color: var(--inactive-tab-bg);
+        border-radius: 20px;
+        color: var(--text-secondary);
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        text-transform: uppercase;
+    }
+    
+    .tab-item.active {
+        background-color: var(--active-tab-bg);
+        color: var(--text-primary);
+    }
+    
+    /* Data Package Cards */
+    .package-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .package-card {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        padding: 15px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px var(--shadow-color);
+        transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
+        border: 1px solid transparent;
+        position: relative;
+    }
+    
+    .package-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px var(--shadow-color);
+    }
+    
+    .package-card.selected {
+        border: 1px solid var(--accent-red);
+        box-shadow: 0 0 15px rgba(226, 76, 76, 0.5);
+    }
+    
+    .package-duration {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-bottom: 5px;
+    }
+    
+    .package-data {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--text-primary);
+        margin-bottom: 5px;
+    }
+    
+    .package-price {
+        font-size: 16px;
+        color: var(--text-secondary);
+    }
+    
+    .package-arrow {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+        font-size: 18px;
+    }
+    
+    /* Referral Code Input & Bonus Message - FIXED */
+    #referral-section {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        height: 0;
+        overflow: hidden;
+        margin: 0;
+    }
+    
+    #referral-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+        height: auto;
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .referral-input-group {
+        margin-bottom: 15px;
+    }
+    
+    .referral-input {
+        width: calc(100% - 30px);
+        padding: 12px 15px;
+        background-color: var(--input-background);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        color: var(--text-primary);
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+    
+    /* Bonus Data Message */
+    .bonus-message {
+        display: flex;
+        align-items: center;
+        color: var(--success-green);
+        font-size: 14px;
+        margin-top: -5px;
+        margin-bottom: 20px;
+    }
+    
+    .bonus-icon {
+        margin-right: 8px;
+        font-size: 18px;
+    }
+    
+    /* Purchase Button - FIXED */
+    #purchase-btn {
+        width: 100%;
+        padding: 15px;
+        background-color: var(--accent-red);
+        color: var(--text-primary);
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        text-transform: uppercase;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out, background-color 0.2s;
+    }
+    
+    #purchase-btn.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    #purchase-btn:hover {
+        background-color: #c73e3e;
+    }
+    
+    #purchase-btn:disabled {
+        background-color: var(--input-background);
+        color: var(--text-secondary);
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+    
+    /* MODAL OVERLAY & BOX STYLING */
+    #modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+    }
+    
+    #confirmation-modal {
+        background-color: var(--card-background);
+        border-radius: 12px;
+        padding: 30px;
+        width: 90%;
+        max-width: 350px;
+        box-shadow: 0 8px 25px var(--shadow-color);
+        text-align: center;
+        transform: scale(0.9);
+        opacity: 0;
+        transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        position: relative;
+    }
+    
+    #modal-overlay.show #confirmation-modal {
+        transform: scale(1);
+        opacity: 1;
+    }
+    
+    .confirmation-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--accent-red);
+        margin-bottom: 25px;
+        text-transform: uppercase;
+    }
+    
+    .confirmation-details {
+        text-align: left;
+        margin-bottom: 20px;
+    }
+    
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        font-size: 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .detail-item:last-child {
+        border-bottom: none;
+        margin-top: 10px;
+        font-weight: 600;
+        font-size: 16px;
+    }
+    
+    .detail-label {
+        color: var(--text-secondary);
+    }
+    
+    .detail-value {
+        font-weight: bold;
+        color: var(--text-primary);
+    }
+    
+    .detail-total-label {
+        color: var(--accent-red);
+        font-weight: bold;
+    }
+    
+    .detail-total-value {
+        color: var(--success-green);
+    }
+    
+    .modal-ok-btn {
+        width: 100%;
+        padding: 12px;
+        background-color: var(--accent-red);
+        color: var(--text-primary);
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+
+    <div class="input-group">
+        <label for="phone-number" class="input-label">Phone number:</label>
+        <input type="text" id="phone-number" class="text-input" value="99904196" readonly>
+    </div>
+    
+    <div class="tabs">
+        <div class="tab-item active">Promotional</div>
+        <div class="tab-item">Entertainment</div>
+    </div>
+    
+    <h2 style="font-size: 16px; font-weight: 600; margin-bottom: 15px;">Additional Data Packages:</h2>
+    
+    <div class="package-grid" id="package-grid">
+        <div class="package-card" data-data="3GB" data-duration="3 DAY" data-price="3,000₮">
+            <div class="package-duration">3 DAY</div>
+            <div class="package-data">3GB</div>
+            <div class="package-price">3,000₮</div>
+            <div class="package-arrow">&rsaquo;</div>
+        </div>
+        <div class="package-card" data-data="5GB" data-duration="5 DAY" data-price="5,000₮">
+            <div class="package-duration">5 DAY</div>
+            <div class="package-data">5GB</div>
+            <div class="package-price">5,000₮</div>
+            <div class="package-arrow">&rsaquo;</div>
+        </div>
+        <div class="package-card" data-data="7GB" data-duration="7 DAY" data-price="7,000₮">
+            <div class="package-duration">7 DAY</div>
+            <div class="package-data">7GB</div>
+            <div class="package-price">7,000₮</div>
+            <div class="package-arrow">&rsaquo;</div>
+        </div>
+        <div class="package-card" data-data="15GB" data-duration="15 DAY" data-price="15,000₮">
+            <div class="package-duration">15 DAY</div>
+            <div class="package-data">15GB</div>
+            <div class="package-price">15,000₮</div>
+            <div class="package-arrow">&rsaquo;</div>
+        </div>
+        <div class="package-card" data-data="25GB" data-duration="30 DAY" data-price="25,000₮">
+            <div class="package-duration">30 DAY</div>
+            <div class="package-data">25GB</div>
+            <div class="package-price">25,000₮</div>
+            <div class="package-arrow">&rsaquo;</div>
+        </div>
+        <div class="package-card" data-data="70GB" data-duration="30 DAY" data-price="65,000₮">
+            <div class="package-duration">30 DAY</div>
+            <div class="package-data">70GB</div>
+            <div class="package-price">65,000₮</div>
+            <div class="package-arrow">&rsaquo;</div>
+        </div>
+    </div>
+    
+    <!-- Referral Section - Now properly hidden initially -->
+    <div id="referral-section">
+        <div class="input-group referral-input-group">
+            <label for="referral-code" class="input-label">Referral Code (Optional):</label>
+            <input type="text" id="referral-code" class="referral-input" placeholder="Enter friend's code here...">
+        </div>
+        <div class="bonus-message">
+            <span class="bonus-icon">✔</span> You'll get  <strong>  3GB  </strong>  bonus data!
+        </div>
+    </div>
+    
+    <!-- Purchase Button - Now properly hidden initially -->
+    <button class="purchase-btn" id="purchase-btn" disabled>PURCHASE Select a package</button>
+</div>
+
+<div id="modal-overlay">
+    <div id="confirmation-modal">
+        <div class="confirmation-title">Purchase Confirmed</div>
+        <div class="confirmation-details">
+            <div class="detail-item">
+                <span class="detail-label">Package:</span>
+                <span class="detail-value" id="modal-package-detail"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Price:</span>
+                <span class="detail-value" id="modal-price-detail"></span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Bonus Data:</span>
+                <span class="detail-value" style="color: var(--success-green);" id="modal-bonus-detail">3GB, 2 Day</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-total-label">Total Data:</span>
+                <span class="detail-total-value" id="modal-total-data"></span>
+            </div>
+        </div>
+        <button class="modal-ok-btn" onclick="closeConfirmation()">OKAY</button>
+    </div>
+</div>
+
+<script>
+    const referralSection = document.getElementById('referral-section');
+    const packageCards = document.querySelectorAll('.package-card');
+    const purchaseBtn = document.getElementById('purchase-btn');
+    
+    // Modal elements
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalPackageDetail = document.getElementById('modal-package-detail');
+    const modalPriceDetail = document.getElementById('modal-price-detail');
+    const modalTotalData = document.getElementById('modal-total-data');
+    
+    // Constant for Bonus Data
+    const BONUS_GB = 3;
+    let selectedPackage = null;
+
+    // Handle package card clicks
+    packageCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove 'selected' class from all cards
+            packageCards.forEach(c => c.classList.remove('selected'));
+            
+            // Add 'selected' class to the clicked card
+            this.classList.add('selected');
+            
+            // Show referral section and purchase button with smooth animation
+            if (!referralSection.classList.contains('visible')) {
+                referralSection.classList.add('visible');
+                purchaseBtn.classList.add('visible');
+            }
+            
+            // Update selected package data
+            selectedPackage = {
+                data: this.dataset.data,
+                duration: this.dataset.duration,
+                price: this.dataset.price
+            };
+            
+            // Update purchase button text and enable it
+            purchaseBtn.textContent = ` PURCHASE  ${selectedPackage.price}`;
+            purchaseBtn.disabled = false;
+        });
+    });
+
+    // Handle purchase button click
+    purchaseBtn.addEventListener('click', function() {
+        if (selectedPackage) {
+            // Calculate total data using the new BONUS_GB constant
+            const purchasedGB = parseInt(selectedPackage.data.replace('GB', ''));
+            const totalGB = purchasedGB + BONUS_GB;
+            
+            // Update modal details
+            modalPackageDetail.textContent = `${selectedPackage.data}, ${selectedPackage.duration}`;
+            modalPriceDetail.textContent = selectedPackage.price;
+            
+            // Update total data display
+            modalTotalData.textContent = `${totalGB}GB`;
+            
+            // Show modal
+            modalOverlay.style.display = 'flex';
+            setTimeout(() => modalOverlay.classList.add('show'), 10);
+        }
+    });
+
+    // Close payment confirmation modal
+    function closeConfirmation() {
+        modalOverlay.classList.remove('show');
+        setTimeout(() => modalOverlay.style.display = 'none', 300);
+    }
+
+    // Allow clicking outside the modal to close it
+    modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) {
+            closeConfirmation();
+        }
+    });
+</script>
+</body>
+</html>
+</div>
+<!-- 4. VAS SCREEN (Starts hidden) -->
+<div id="view-vas" class="hidden w-full p-4">
+<div class="flex items-center mb-6">
+<button onclick="closeFullView('vas')">
+<svg class="w-6 h-6 text-white mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+</button>
+<h1 class="text-xl font-semibold">НЭМЭЛТ ҮЙЛЧИЛГЭЭ (VAS)</h1>
+</div>
+<div id="vas-main-content" class="section-card space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<!-- 1. HiTone -->
+<div class="vas-card" onclick="openVASSheet('HiTone', '1200₮', '50₮')">
+<svg class="w-8 h-8 accent-red-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464A4 4 0 0117.5 12a4 4 0 01-1.964 3.536M12 21V3m0 0l-4 4m4-4l4 4M5 19h14M1 12h2M21 12h2M12 1h1V5h-1V1zM11 1h1V5h-1V1z"></path></svg>
+<p class="font-bold">HiTone</p>
+<label class="toggle-switch" onclick="event.stopPropagation()">
+<input type="checkbox" checked>
+<span class="slider"></span>
+</label>
+</div>
+<!-- 2. Хөгжилтэй дуудлага (Funny Call) -->
+<div class="vas-card" onclick="openVASSheet('Хөгжилтэй дуудлага', '1200₮', '50₮')">
+<svg class="w-8 h-8 accent-red-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+<p class="font-bold">Хөгжилтэй дуудлага</p>
+<label class="toggle-switch" onclick="event.stopPropagation()">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+</div>
+<!-- 3. Дугаар нууцлах (Hide Number) -->
+<div class="vas-card" onclick="openVASSheet('Дугаар нууцлах', '1200₮', '50₮')">
+<svg class="w-8 h-8 accent-red-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+<p class="font-bold">Дугаар нууцлах</p>
+<label class="toggle-switch" onclick="event.stopPropagation()">
+<input type="checkbox">
+<span class="slider"></span>
+</label>
+</div>
+<!-- 4. Дуудлага хадгалах (Call Recording) -->
+<div class="vas-card" onclick="openVASSheet('Дуудлага хадгалах', '1200₮', '50₮')">
+<svg class="w-8 h-8 accent-red-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v14L9 19zm0 0c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zm12-3c-1.105 0-2 .895-2 2s.895 2 2 2 2-.895 2-2-.895-2-2-2zM9 9v10m12-14v10"></path></svg>
+<p class="font-bold">Дуудлага хадгалах</p>
+<label class="toggle-switch" onclick="event.stopPropagation()">
+<input type="checkbox" checked>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+<p class="text-sm text-gray-400 text-center pt-2">Унтраалга нь үйлчилгээний идэвхтэй/идэвхгүй төлөвийг заана.</p>
+</div>
+</div>
+<!-- END VAS SCREEN -->
+
+<!-- 5. REDEEM CODE SCREEN (Starts hidden and slides in) -->
+<div id="view-redeem-code" class="hidden fixed inset-0 z-50 flex items-center justify-center p-0 transition-opacity duration-100">
+<div id="redeem-content" class="w-full max-w-[420px] h-full bg-[#11223b] transform translate-x-full transition-transform duration-300 flex flex-col p-4 shadow-xl">
+<div class="flex justify-start items-center mb-8">
+<button onclick="closeFullView('redeem-code')">
+<svg class="w-6 h-6 text-white mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+</button>
+<h1 class="text-xl font-semibold">REDEEM CODE</h1>
+</div>
+<div class="flex-grow space-y-6">
+<p class="text-gray-400 text-sm">Please enter your promotional or prize code below to redeem your reward.</p>
+<!-- Input Box -->
+<input type="text" id="redeem-input" placeholder="Enter code here"
+                          class="w-full p-4 rounded-xl bg-secondary-contrast border-2 border-[#1a3355] focus:border-[#ff5252] focus:outline-none text-white placeholder-gray-500 font-mono tracking-wider text-lg">
+<!-- Redeem Button -->
+<button id="btn-redeem-submit"
+                           class="w-full p-4 rounded-xl font-bold text-lg uppercase accent-red-bg"
+                           style="box-shadow: 0 4px 10px rgba(255, 82, 82, 0.4);">
+                       REDEEM
+</button>
+</div>
+</div>
+</div>
+
+</div>
+<!-- VAS BOTTOM SHEET - Appears on Service Click (UPDATED: Referral Input is always visible) -->
+<div id="vas-bottom-sheet"
+        class="fixed inset-x-0 bottom-0 z-[55] hidden transition-transform duration-300"
+        style="max-width: 420px; margin-left: auto; margin-right: auto; height: 50vh;"> <!-- Increased height slightly -->
+<div id="vas-sheet-content"
+            class="w-full bg-[#11223b] border-t-4 border-[#ff5252] rounded-t-3xl shadow-2xl transform translate-y-full p-6 flex flex-col h-full">
+<!-- Header -->
+<div class="flex justify-between items-center mb-6">
+<h2 id="sheet-title" class="text-xl font-bold text-white">Үйлчилгээний Сонголтууд</h2>
+<button onclick="closeVASSheet()">
+<svg class="w-6 h-6 text-gray-300 hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+</button>
+</div>
+<!-- Service Options (Daily/Monthly) -->
+<div class="flex space-x-4 mb-6">
+<button id="option-daily" data-price="50₮" class="flex-1 p-3 rounded-xl bg-secondary-contrast text-center border-2 border-[#1a3355] hover:border-[#ff5252] transition-colors">
+<p class="text-lg font-bold">Өдрөөр</p>
+<p class="text-xs text-gray-400" id="daily-price-display">50₮</p>
+</button>
+<button id="option-monthly" data-price="1200₮" class="flex-1 p-3 rounded-xl bg-secondary-contrast text-center ring-2 ring-[#ff5252] border-2 border-[#1a3355] hover:border-[#ff5252] transition-colors">
+<p class="text-lg font-bold">Сараар</p>
+<p class="text-xs text-gray-400" id="monthly-price-display">1200₮</p>
+</button>
+</div>
+<!-- Referral Code Input (Always Visible) -->
+<div id="referral-input-container" class="space-y-2 mb-6">
+<input type="text" id="vas-referral-code" placeholder="Урамшууллын код"
+                      class="w-full p-3 rounded-lg bg-secondary-contrast border-2 border-[#1a3355] focus:border-[#ff5252] focus:outline-none text-white placeholder-gray-500 text-sm">
+<p class="text-xs text-gray-400">Use referral code and get gifts!</p>
+</div>
+<!-- Action Button -->
+<button id="vas-activate-btn" class="w-full p-4 rounded-xl font-bold text-lg accent-red-bg mt-auto">
+               Идэвхжүүлэх (1200₮)
+</button>
+<!-- More Info Link -->
+<p class="text-center text-xs text-gray-500 mt-4">
+<a href="#" class="hover:underline">Дэлгэрэнгүй мэдээллийг энд дарж аваарай.</a>
+</p>
+</div>
+</div>
+<!-- END VAS BOTTOM SHEET -->
+
+<!-- 6. PRIZE POP-UP MODAL (First Success Modal) -->
+<div id="prize-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-[60] flex items-center justify-center p-4">
+<div class="bg-secondary-contrast w-full max-w-sm p-8 rounded-xl text-center shadow-2xl border-2 border-green-500 transform scale-95 transition-all duration-300">
+<p class="text-4xl mb-4" id="prize-icon">✅</p>
+<h2 class="text-xl font-bold text-green-400 mb-2" id="prize-heading">SUCCESS!</h2>
+<p class="text-xl font-extrabold text-white" id="prize-text">Үйлчилгээ идэвхжлээ.</p>
+<p class="text-sm text-gray-400 mt-4" id="prize-subtext">Таныг амжилттай бүртгэлээ.</p>
+<button class="mt-6 p-2 px-6 rounded-lg bg-green-500 hover:bg-green-600 font-semibold text-white transition-colors" onclick="document.getElementById('prize-modal').classList.add('hidden');">
+               GOT IT
+</button>
+</div>
+</div>
+<!-- 7. REWARD POP-UP MODAL (Second Referral Gift Modal) -->
+<div id="reward-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-[65] flex items-center justify-center p-4">
+<div class="bg-secondary-contrast w-full max-w-sm p-8 rounded-xl text-center shadow-2xl border-2 border-[#ff5252] transform scale-95 transition-all duration-300">
+<p class="text-4xl mb-4">🎁</p>
+<h2 class="text-xl font-bold accent-red-text mb-2">GIFT RECEIVED!</h2>
+<p class="text-lg font-extrabold text-white" id="reward-text">Voucher: 5GB Data</p>
+<p class="text-sm text-gray-400 mt-4">Таны урамшууллын код амжилттай хэрэглэгдлээ. Та шагналын хэсгээс (Reward section) бэлгээ авна уу.</p>
+<button class="mt-6 p-2 px-6 rounded-lg accent-red-bg font-semibold text-white transition-colors" onclick="document.getElementById('reward-modal').classList.add('hidden');">
+               ШАГНАЛ РУУ ОЧИХ
+</button>
+</div>
+</div>
+
+<script>
+   // --- UI/Navigation Logic ---
+   // Utility function to switch views (for home, data, ref hub, vas)
+   function showView(targetId) {
+       const redeemWrapper = document.getElementById('view-redeem-code');
+       const redeemContainer = document.getElementById('redeem-content');
+       // Ensure the VAS sheet is closed when navigating away
+       closeVASSheet();
+       // Step 1: Handle the sliding Redeem screen
+       if (targetId === 'redeem-code') {
+           // Hide all main content views (home, data, etc.)
+           document.querySelectorAll('[id^="view-"]').forEach(view => {
+               if (view.id.startsWith('view-') && view.id !== 'view-redeem-code') {
+                   view.classList.add('hidden');
+               }
+           });
+           // Show and animate the Redeem screen
+           redeemWrapper.classList.remove('hidden');
+           setTimeout(() => {
+               redeemContainer.classList.remove('translate-x-full');
+           }, 10);
+           return;
+       }
+       // Step 2: Handle all other main views (Home, Ref Hub, Data, VAS)
+       document.querySelectorAll('[id^="view-"]').forEach(view => {
+           if (view.id === `view-${targetId}`) {
+               view.classList.remove('hidden');
+           } else {
+               view.classList.add('hidden');
+           }
+       });
+       // Step 3: Ensure the sliding redeem view is visually off-screen and hidden if we switch to a different main view
+       if (!redeemWrapper.classList.contains('hidden')) {
+           redeemContainer.classList.add('translate-x-full');
+           setTimeout(() => redeemWrapper.classList.add('hidden'), 300);
+       }
+   }
+   // Utility function to close full-screen views (slide out and return to home)
+   function closeFullView(targetId) {
+       const viewWrapper = document.getElementById(`view-${targetId}`);
+       if (targetId === 'redeem-code') {
+           const redeemContainer = document.getElementById('redeem-content');
+           redeemContainer.classList.add('translate-x-full');
+           // Wait for the slide-out transition before hiding and showing home
+           setTimeout(() => {
+               viewWrapper.classList.add('hidden');
+               document.getElementById('redeem-input').value = ''; // Clear input on close
+               showView('home');
+           }, 300);
+       } else {
+           // For non-sliding views, just hide and show home immediately
+           viewWrapper.classList.add('hidden');
+           showView('home');
+       }
+   }
+   // Custom alert function to replace window.alert() - Now used for general errors
+   function alert(message) {
+       // Reset modal for alert state
+       document.getElementById('prize-icon').textContent = "⚠️";
+       document.getElementById('prize-heading').textContent = "Input Error";
+       document.getElementById('prize-heading').classList.remove('text-green-400');
+       document.getElementById('prize-heading').classList.add('text-red-400');
+       document.getElementById('prize-subtext').textContent = "Please try again.";
+       document.getElementById('prize-text').textContent = message;
+       document.getElementById('prize-modal').classList.remove('hidden');
+   }
+   // Function for the first success modal (VAS Purchased)
+   function showPrizeModal(service, price) {
+       // Reset modal for success state
+       document.getElementById('prize-icon').textContent = "✅";
+       document.getElementById('prize-heading').textContent = "SUCCESS!";
+       document.getElementById('prize-heading').classList.remove('text-red-400');
+       document.getElementById('prize-heading').classList.add('text-green-400');
+       document.getElementById('prize-subtext').textContent = "Таныг амжилттай бүртгэлээ.";
+       document.getElementById('prize-text').textContent = `${service} ${price}-ээр идэвхжлээ!`;
+       document.getElementById('prize-modal').classList.remove('hidden');
+   }
+   // Function for the second success modal (Gift Received)
+   function showRewardModal(rewardText) {
+       document.getElementById('reward-text').textContent = rewardText;
+       document.getElementById('reward-modal').classList.remove('hidden');
+   }
+   // --- VAS Specific Functions ---
+   let currentService = {
+       name: 'Үйлчилгээ',
+       monthly: '1200₮',
+       daily: '50₮',
+       currentPrice: '1200₮'
+   };
+   function openVASSheet(serviceName, monthlyPrice, dailyPrice) {
+       const sheet = document.getElementById('vas-bottom-sheet');
+       const content = document.getElementById('vas-sheet-content');
+       const title = document.getElementById('sheet-title');
+       const dailyBtn = document.getElementById('option-daily');
+       const monthlyBtn = document.getElementById('option-monthly');
+       // Update global service object
+       currentService.name = serviceName;
+       currentService.monthly = monthlyPrice;
+       currentService.daily = dailyPrice;
+       currentService.currentPrice = monthlyPrice; // Default to monthly
+       // 1. Update UI elements
+       title.textContent = serviceName + ' - Сонголт';
+       document.getElementById('monthly-price-display').textContent = monthlyPrice;
+       document.getElementById('daily-price-display').textContent = dailyPrice;
+       // Reset to Monthly default
+       monthlyBtn.classList.add('ring-2', 'ring-[#ff5252]');
+       dailyBtn.classList.remove('ring-2', 'ring-[#ff5252]');
+       document.getElementById('vas-referral-code').value = ''; // Clear input on open
+       updateVASButton(monthlyPrice);
+       // 2. Show the Sheet Container and slide up
+       sheet.classList.remove('hidden');
+       setTimeout(() => {
+           content.classList.remove('translate-y-full');
+       }, 10);
+   }
+   function closeVASSheet() {
+       const sheet = document.getElementById('vas-bottom-sheet');
+       const content = document.getElementById('vas-sheet-content');
+       // Trigger the slide-down animation
+       content.classList.add('translate-y-full');
+       // Hide the Sheet Container after the animation completes
+       setTimeout(() => {
+           sheet.classList.add('hidden');
+       }, 300);
+   }
+   function updateVASButton(price) {
+       document.getElementById('vas-activate-btn').textContent = `Идэвхжүүлэх (${price})`;
+   }
+
+   // --- Event Listeners and Initial Load ---
+   document.addEventListener('DOMContentLoaded', () => {
+       // Initial setup
+       showView('home');
+       // Redeem Submission Logic
+       document.getElementById('btn-redeem-submit').addEventListener('click', () => {
+           const code = document.getElementById('redeem-input').value.trim();
+           if (code) {
+               closeFullView('redeem-code');
+               setTimeout(() => {
+                   // This is the first pop-up, but for the Redeem screen. Use showRewardModal for the specific message.
+                   showRewardModal(`30GB Data 10DAY`);
+               }, 350);
+           } else {
+               alert('Please enter a redeem code.');
+           }
+       });
+       // VAS Option Selection Logic
+       const dailyBtn = document.getElementById('option-daily');
+       const monthlyBtn = document.getElementById('option-monthly');
+       dailyBtn.addEventListener('click', () => {
+           dailyBtn.classList.add('ring-2', 'ring-[#ff5252]');
+           monthlyBtn.classList.remove('ring-2', 'ring-[#ff5252]');
+           currentService.currentPrice = currentService.daily;
+           updateVASButton(currentService.currentPrice);
+       });
+       monthlyBtn.addEventListener('click', () => {
+           monthlyBtn.classList.add('ring-2', 'ring-[#ff5252]');
+           dailyBtn.classList.remove('ring-2', 'ring-[#ff5252]');
+           currentService.currentPrice = currentService.monthly;
+           updateVASButton(currentService.currentPrice);
+       });
+       // VAS Activate Logic (Handle Double Pop-up)
+       document.getElementById('vas-activate-btn').addEventListener('click', () => {
+           const referralCode = document.getElementById('vas-referral-code').value.trim();
+           closeVASSheet();
+           // 1. Show FIRST Pop-up (VAS Purchase Success)
+           showPrizeModal(currentService.name, currentService.currentPrice);
+           // 2. If referral code was entered, show SECOND Pop-up after a delay
+           if (referralCode) {
+               setTimeout(() => {
+                   document.getElementById('prize-modal').classList.add('hidden'); // Hide first modal
+                   // Simulate a specific gift based on the referral code
+                   let giftText = referralCode === 'MOBIFUN' ? 'Coupon: 1000₮ Call Credit' : 'Coupon: 10% VOO';
+                   showRewardModal(giftText);
+               }, 1500); // 1.5 second delay between pop-ups
+           }
+       });
+   });
+</script>
+</body>
+</html>
