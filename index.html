@@ -1320,9 +1320,9 @@
 <div id="reward-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-[65] flex items-center justify-center p-4">
 <div class="bg-secondary-contrast w-full max-w-sm p-8 rounded-xl text-center shadow-2xl border-2 border-[#ff5252] transform scale-95 transition-all duration-300">
 <p class="text-4xl mb-4">🎁</p>
-<h2 class="text-xl font-bold accent-red-text mb-2">БАЯХ ХҮРГЭЕ!</h2>
+<h2 class="text-xl font-bold accent-red-text mb-2">ШИНЭ ЖИЛИЙН МЭНД ХҮРГЭЕ!</h2>
 <p class="text-lg font-extrabold text-white" id="reward-text">Voucher: 5GB Data</p>
-<p class="text-sm text-gray-400 mt-4">Таны redeem код амжилттай хэрэглэгдлээ. Та Шагнал цэснээс (Reward section) бэлгээ авна уу.</p>
+<p class="text-sm text-gray-400 mt-4">Мобиком 30 жилийнхээ ойг тохиолдуулан танд 30GB дата бэлэглэж байна</p>
 <button class="mt-6 p-2 px-6 rounded-lg accent-red-bg font-semibold text-white transition-colors" onclick="document.getElementById('reward-modal').classList.add('hidden');">
                ШАГНАЛ РУУ ОЧИХ
 </button>
@@ -1469,7 +1469,7 @@
                closeFullView('redeem-code');
                setTimeout(() => {
                    // This is the first pop-up, but for the Redeem screen. Use showRewardModal for the specific message.
-                   showRewardModal(`30GB Data 10DAY`);
+                   showRewardModal(`30GB`);
                }, 350);
            } else {
                alert('Please enter a redeem code.');
